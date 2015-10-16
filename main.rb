@@ -46,8 +46,14 @@ end
 
 # legislators_gender("F")
 
-def active_legislators
-	active_legislators = Legislator.where("in_office = ?", "1")
+def find_active
+active_legislators = Legislator.where(in_office: 1).where("title=? OR title=?", "Sen","Rep")
+counts = active_legislators.group(:state).order('count_id DESC').count('id')
+	counts.each do |state, legislator_count|
+		state_rep_count = active_legislators.where("state=?", state).where(title: "Rep").count
+		state_senator_count = active_legislators.where("state=?",state).where(title: "Sen").count
+			puts "#{state}: #{state_senator_count} senators, #{state_rep_count} representatives"
+		end
 end
 
-p active_legislators
+find_active
