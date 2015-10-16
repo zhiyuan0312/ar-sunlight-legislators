@@ -1,3 +1,3 @@
 require_relative 'app/models/legislator'
 
-p Legislator.all
+p Legislator.count
